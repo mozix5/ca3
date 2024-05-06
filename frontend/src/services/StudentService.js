@@ -1,41 +1,62 @@
 import axios from 'axios';
 
-export function getStudents() {
-  return axios.get('http://127.0.0.1:8000/students/')
-    .then(response => response.data)
+const baseURL = 'http://127.0.0.1:8000/students/';
+const headers = {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+};
+
+export async function getStudents() {
+  try {
+    const response = await axios.get(baseURL);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching students:', error);
+    throw error;
+  }
 }
 
-export function deleteStudent(studentId) {
-  return axios.delete('http://127.0.0.1:8000/students/' + studentId + '/', {
-   method: 'DELETE',
-   headers: {
-     'Accept':'application/json',
-     'Content-Type':'application/json'
-   }
-  })
-  .then(response => response.data)
+export async function deleteStudent(studentId) {
+  try {
+    const response = await axios.delete(`${baseURL}${studentId}/`, { headers });
+    return response.data;
+  } catch (error) {
+    console.error(`Error deleting student with ID ${studentId}:`, error);
+    throw error;
+  }
 }
 
-export function addStudent(student){
-  return axios.post('http://127.0.0.1:8000/students/', {
-    studentId:null,
-    FirstName:student.FirstName.value,
-    LastName:student.LastName.value,
-    RegistrationNo:student.RegistrationNo.value,
-    Email:student.Email.value,
-    Course:student.Course.value
-  })
-    .then(response=>response.data)
+export async function addStudent(student) {
+  const { FirstName, LastName, RegistrationNo, Email, Course } = student;
+  try {
+    const response = await axios.post(baseURL, {
+      studentId: null,
+      FirstName: FirstName.value,
+      LastName: LastName.value,
+      RegistrationNo: RegistrationNo.value,
+      Email: Email.value,
+      Course: Course.value
+    }, { headers });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding student:', error);
+    throw error;
+  }
 }
 
-export function updateStudent(stuid, student) {
-  return axios.put('http://127.0.0.1:8000/students/' + stuid + '/', {
-    FirstName:student.FirstName.value,
-    LastName:student.LastName.value,
-    RegistrationNo:student.RegistrationNo.value,
-    Email:student.Email.value,
-    Course:student.Course.value
-  })
-   .then(response => response.data)
+export async function updateStudent(studentId, student) {
+  const { FirstName, LastName, RegistrationNo, Email, Course } = student;
+  try {
+    const response = await axios.put(`${baseURL}${studentId}/`, {
+      FirstName: FirstName.value,
+      LastName: LastName.value,
+      RegistrationNo: RegistrationNo.value,
+      Email: Email.value,
+      Course: Course.value
+    }, { headers });
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating student with ID ${studentId}:`, error);
+    throw error;
+  }
 }
-

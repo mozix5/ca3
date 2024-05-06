@@ -6,7 +6,7 @@ import Carousel from 'react-bootstrap/Carousel';
 
 const Home = () => {
   return (
-  <div className="row">
+  <div className="row overflow-y-hidden h-[91vh] ">
     <Carousel variant="dark">
       <Carousel.Item>
         <img
